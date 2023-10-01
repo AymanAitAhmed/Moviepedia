@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -46,8 +47,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MoviepediaTheme {
                 // A surface container using the 'background' color from the theme
-                val movieListViewModel = viewModel<MovieListViewModel>()
-
+                val viewModel : MovieListViewModel = hiltViewModel()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                         currentScreen.value?.destination?.route?.lowercase() == Screens.SplashScreen.route.lowercase()
                                 || currentScreen.value?.destination?.route?.lowercase() == Screens.MovieDetailsScreen.route
 
-                    val layoutType = movieListViewModel.layoutType.collectAsStateWithLifecycle()
+                    val layoutType = viewModel.layoutType.collectAsStateWithLifecycle()
 
                     ModalNavigationDrawer(
                         drawerContent = {
@@ -80,7 +80,9 @@ class MainActivity : ComponentActivity() {
                                         scrollBehavior = scrollBehavior,
                                         onShowDrawerClick = { /*TODO*/ },
                                         onSearchClick = { /*TODO*/ },
-                                        onChangeListLayoutClick = movieListViewModel::flipLayoutType
+                                        onChangeListLayoutClick = {
+                                            viewModel.flipLayoutType()
+                                        }
                                     )
                                 }
                             }
@@ -95,7 +97,9 @@ class MainActivity : ComponentActivity() {
                                 ) {
 
                                     composable(route = Screens.SplashScreen.route) {
-                                        SplashScreen(navController, movieListViewModel)
+                                        SplashScreen(navController, initializingOperation = {
+                                            viewModel.getCurrentLayoutType()
+                                        })
                                     }
                                     composable(route = Screens.MovieDetailsScreen.route) {
 

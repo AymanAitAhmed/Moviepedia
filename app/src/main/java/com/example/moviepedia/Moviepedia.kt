@@ -1,4 +1,7 @@
 package com.example.moviepedia
 
-class Moviepedia {
-}
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class Moviepedia : Application()

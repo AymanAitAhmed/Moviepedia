@@ -11,15 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.moviepedia.components.Screens
-import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navController: NavController
-) {
+    navController: NavController,
+    initializingOperation: () -> Unit
+    ) {
 
     LaunchedEffect(key1 = 1) {
-        delay(3000L)
+        initializingOperation()
         navController.navigate(Screens.ListsGraph.route)
     }
     Box(
