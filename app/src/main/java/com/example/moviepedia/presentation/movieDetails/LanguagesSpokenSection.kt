@@ -15,7 +15,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moviepedia.components.GenreTypeCard
-import com.example.moviepedia.components.getEquivalentGenre
 
 @Composable
 fun LanguagesSpokenLazyRow(

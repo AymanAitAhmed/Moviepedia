@@ -2,7 +2,7 @@ package com.example.moviepedia.presentation.movie_list_template
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviepedia.data.LayoutType
+import com.example.moviepedia.data.datastore.LayoutType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

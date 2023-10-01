@@ -1,4 +1,4 @@
-package com.example.moviepedia.data
+package com.example.moviepedia.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

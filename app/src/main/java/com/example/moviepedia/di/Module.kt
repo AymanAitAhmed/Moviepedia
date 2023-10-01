@@ -1,7 +1,7 @@
 package com.example.moviepedia.di
 
 import android.content.Context
-import com.example.moviepedia.data.LayoutType
+import com.example.moviepedia.data.datastore.LayoutType
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
