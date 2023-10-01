@@ -67,7 +67,7 @@ fun OverviewSection() {
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Start,
             overflow = TextOverflow.Ellipsis,
-            maxLines = maxLines.value,
+            maxLines = 1
         )
 
         Text(
