@@ -14,18 +14,21 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrawerContent() {
     ModalDrawerSheet(
+        modifier = Modifier.padding(8.dp),
         drawerShape = RectangleShape,
         drawerContainerColor = MaterialTheme.colorScheme.surface,
         drawerContentColor = MaterialTheme.colorScheme.onSurface
     ) {
-        val itemSelected = rememberSaveable() {
+        val itemSelected = rememberSaveable {
             mutableStateOf(0)
         }
+
 
         drawerItems.forEachIndexed { index, navigationItem ->
             NavigationDrawerItem(
