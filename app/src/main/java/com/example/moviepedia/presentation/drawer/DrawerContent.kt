@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DrawerContent() {
     ModalDrawerSheet(
-        modifier = Modifier.padding(8.dp),
         drawerShape = RectangleShape,
         drawerContainerColor = MaterialTheme.colorScheme.surface,
         drawerContentColor = MaterialTheme.colorScheme.onSurface

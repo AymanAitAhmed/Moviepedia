@@ -11,10 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.moviepedia.components.Screens
 
 @Composable
 fun MovieList(
-    layoutType: Int
+    layoutType: Int,
+    navController: NavController
 ) {
 
     val list = listOf(
@@ -56,7 +59,9 @@ fun MovieList(
                         language = movie.language,
                         rating = movie.rating,
                         ratingCount = movie.ratingCount,
-                        onClick = {}
+                        onClick = {
+                            navController.navigate(Screens.MovieDetailsScreen.route)
+                        }
                     )
                 }
             }

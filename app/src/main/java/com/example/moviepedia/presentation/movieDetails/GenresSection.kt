@@ -11,10 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moviepedia.components.GenreTypeCard
 import com.example.moviepedia.components.getEquivalentGenre
+import com.example.moviepedia.data.movieDetails.Genre
 
 @Composable
 fun GenresLazyRow(
-    genresList: List<Int>
+    genresList: List<Genre>
 ) {
 
     LazyRow(
@@ -24,7 +25,7 @@ fun GenresLazyRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         items(genresList){
-            GenreTypeCard(title = getEquivalentGenre(it))
+            GenreTypeCard(title = getEquivalentGenre(it.id))
         }
     }
 }

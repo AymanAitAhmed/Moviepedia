@@ -49,7 +49,7 @@ fun MovieUpperCard(
         horizontalArrangement = Arrangement.Start
     ) {
         SubcomposeAsyncImage(
-            model = imageURL,
+            model = "https://image.tmdb.org/t/p/w500$imageURL",
             contentDescription = "poster",
             modifier = Modifier
                 .fillMaxWidth(0.3f)
@@ -70,7 +70,7 @@ fun MovieUpperCard(
         ) {
             Text(
                 text = title,
-                fontSize = 15.sp,
+                fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -81,7 +81,7 @@ fun MovieUpperCard(
             )
             Text(
                 text = date,
-                fontSize = 11.sp,
+                fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -93,7 +93,7 @@ fun MovieUpperCard(
             if (duration != 0){
                 Text(
                     text = formatDuration(duration),
-                    fontSize = 11.sp,
+                    fontSize = 15.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -105,7 +105,7 @@ fun MovieUpperCard(
             }else{
                 Text(
                     text = releaseState,
-                    fontSize = 11.sp,
+                    fontSize = 15.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -131,7 +131,7 @@ fun MovieUpperCard(
                 )
                 Text(
                     text = "$rating($ratingCount)",
-                    fontSize= 10.sp,
+                    fontSize= 15.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -142,7 +142,7 @@ fun MovieUpperCard(
                 )
                 Text(
                     text = popularity.toString(),
-                    fontSize= 10.sp,
+                    fontSize= 15.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }

@@ -28,7 +28,9 @@ import com.example.moviepedia.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun OverviewSection() {
+fun OverviewSection(
+    description : String
+) {
 
     val maxLines = rememberSaveable {
         mutableStateOf(3)
@@ -60,7 +62,7 @@ fun OverviewSection() {
 
         Text(
             text = "Overview:",
-            fontSize = 10.sp,
+            fontSize = 15.sp,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .fillMaxWidth(),
@@ -71,12 +73,8 @@ fun OverviewSection() {
         )
 
         Text(
-            text = "Lorem ipsum dolor sit amet. A veritatis itaque 33 accusamus fuga non consequatur cumque et nihil aliquam? Sed reiciendis voluptates id tempore officia aut quidem repudiandae. Nam autem quibusdam et autem autem aut ratione veritatis.\n" +
-                    "\n" +
-                    "Et aperiam voluptate eos Quis voluptates vel labore fugiat ea earum exercitationem et distinctio tempore. Aut animi quae non expedita odio non voluptatem molestiae ab consequatur fugit et dolores omnis? 33 facere placeat aut voluptates dolorem quo neque officia ut incidunt quas ut iusto molestias.\n" +
-                    "\n" +
-                    "Ab dolor voluptatum qui dolorum laudantium non asperiores culpa et beatae perferendis At quaerat dolores et velit magnam. Ut doloribus rerum est optio sunt quo quae esse. Aut aliquam dolorem qui obcaecati blanditiis ea consequuntur impedit.",
-            fontSize = 12.sp,
+            text = description,
+            fontSize = 13.sp,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .fillMaxWidth(),

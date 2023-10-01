@@ -2,7 +2,9 @@ package com.example.moviepedia.presentation.movieDetails
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,15 +17,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moviepedia.components.GenreTypeCard
+import com.example.moviepedia.data.movieDetails.SpokenLanguage
 
 @Composable
 fun LanguagesSpokenLazyRow(
-    languagesList : List<String>
+    languagesList : List<SpokenLanguage>
 ) {
 
     Text(
         text = "Languages spoken:",
-        fontSize = 10.sp,
+        fontSize = 15.sp,
         color = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier
             .fillMaxWidth(),
@@ -32,7 +35,7 @@ fun LanguagesSpokenLazyRow(
         overflow = TextOverflow.Ellipsis,
         maxLines = 1
     )
-
+    Spacer(modifier = Modifier.height(8.dp))
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(4.dp),
@@ -40,9 +43,9 @@ fun LanguagesSpokenLazyRow(
         verticalAlignment = Alignment.CenterVertically
     ){
         items(count = languagesList.size, key = {
-            languagesList[it]
+            languagesList[it].english_name
         }){
-            GenreTypeCard(title = languagesList[it])
+            GenreTypeCard(title = languagesList[it].english_name)
         }
     }
 

@@ -27,6 +27,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.moviepedia.components.Screens
 import com.example.moviepedia.presentation.drawer.DrawerContent
+import com.example.moviepedia.presentation.movieDetails.MovieDetailsScreen
 import com.example.moviepedia.presentation.movie_list_template.MovieList
 import com.example.moviepedia.presentation.movie_list_template.MovieListViewModel
 import com.example.moviepedia.presentation.movie_list_template.MyTopAppBar
@@ -40,9 +41,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MoviepediaTheme {
+            MoviepediaTheme(dynamicColor = false) {
                 // A surface container using the 'background' color from the theme
-                val viewModel : MovieListViewModel = hiltViewModel()
+                val viewModel: MovieListViewModel = hiltViewModel()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -58,6 +59,7 @@ class MainActivity : ComponentActivity() {
                     val layoutType = viewModel.layoutType.collectAsStateWithLifecycle()
 
                     ModalNavigationDrawer(
+                        modifier = Modifier.fillMaxSize(),
                         drawerContent = {
                             DrawerContent()
                         },
@@ -68,7 +70,7 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxSize()
                                 .nestedScroll(scrollBehavior.nestedScrollConnection),
                             topBar = {
-                                if (!drawerTopAppBarEnabled){
+                                if (!drawerTopAppBarEnabled) {
                                     MyTopAppBar(
                                         title = "${currentScreen.value?.destination?.route}",
                                         isLayoutGrid = layoutType.value != 0,
@@ -80,7 +82,8 @@ class MainActivity : ComponentActivity() {
                                         }
                                     )
                                 }
-                            }
+                            },
+                            containerColor = MaterialTheme.colorScheme.background
                         ) { paddingValues ->
                             Box(
                                 modifier = Modifier.padding(paddingValues),
@@ -97,10 +100,17 @@ class MainActivity : ComponentActivity() {
                                         })
                                     }
                                     composable(route = Screens.MovieDetailsScreen.route) {
+                                        MovieDetailsScreen(
+                                            onNavigateBackClick = {
+                                                navController.popBackStack()
+                                            },
+                                            onSearchClick = {
 
+                                            }
+                                        )
                                     }
 
-                                    listsGraph(navController = navController,layoutType)
+                                    listsGraph(navController = navController, layoutType)
 
 
                                 }
@@ -115,13 +125,13 @@ class MainActivity : ComponentActivity() {
 }
 
 
-fun NavGraphBuilder.listsGraph(navController: NavController,layoutType : State<Int>) {
+fun NavGraphBuilder.listsGraph(navController: NavController, layoutType: State<Int>) {
     navigation(
         startDestination = Screens.TrendingScreen.route,
         route = Screens.ListsGraph.route
     ) {
         composable(route = Screens.TrendingScreen.route) {
-            MovieList(layoutType.value)
+            MovieList(layoutType.value, navController)
         }
 
         composable(route = Screens.PopularScreen.route) {

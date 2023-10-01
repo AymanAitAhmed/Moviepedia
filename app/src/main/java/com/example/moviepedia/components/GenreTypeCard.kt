@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -27,6 +28,6 @@ fun GenreTypeCard(
             .padding(4.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = title, color = color)
+        Text(text = title, color = color,fontWeight = FontWeight.Bold)
     }
 }
