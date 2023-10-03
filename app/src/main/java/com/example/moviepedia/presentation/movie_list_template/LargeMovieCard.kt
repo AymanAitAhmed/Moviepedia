@@ -9,18 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,8 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.example.moviepedia.R
-import com.example.moviepedia.components.AutoResizeText
-import com.example.moviepedia.components.FontSizeRange
+import com.example.moviepedia.components.GenreTypeCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,6 +102,7 @@ fun LargeMovieCard(
                         .fillMaxWidth()
                         .weight(1f),
                     textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
@@ -119,23 +115,7 @@ fun LargeMovieCard(
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     items(5) {
-                        OutlinedCard(
-                            modifier = Modifier
-                                .fillMaxHeight(0.9f)
-                                .padding(0.dp),
-                            shape = RoundedCornerShape(15.dp),
-                            colors = CardDefaults.outlinedCardColors(
-                                //containerColor = MaterialTheme.colorScheme.onSurface
-                            )
-                        ) {
-                            Text(
-                                text = "action$it",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = 10.sp,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(4.dp)
-                            )
-                        }
+                        GenreTypeCard(title = "action$it", fontWeight = FontWeight.Light, fontSize = 12.sp)
                     }
                 }
 

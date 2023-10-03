@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,8 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.example.moviepedia.R
-import com.example.moviepedia.components.AutoResizeText
-import com.example.moviepedia.components.FontSizeRange
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,7 +102,7 @@ fun SmallMovieCard(
                 )
                 Text(
                     text = language,
-                    fontSize = 6.sp,
+                    fontSize = 10.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -118,7 +115,7 @@ fun SmallMovieCard(
                 )
                 Text(
                     text = "$rating($ratingCount)",
-                    fontSize = 7.sp,
+                    fontSize = 10.sp,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }

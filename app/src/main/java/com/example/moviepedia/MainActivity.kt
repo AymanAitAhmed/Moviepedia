@@ -3,6 +3,8 @@ package com.example.moviepedia
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -94,12 +96,45 @@ class MainActivity : ComponentActivity() {
                                     startDestination = Screens.SplashScreen.route
                                 ) {
 
-                                    composable(route = Screens.SplashScreen.route) {
+                                    composable(
+                                        route = Screens.SplashScreen.route,
+                                        exitTransition = {
+                                            slideOutOfContainer(
+                                                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                                                animationSpec = tween(700, 20)
+                                            )
+                                        }) {
                                         SplashScreen(navController, initializingOperation = {
                                             viewModel.getCurrentLayoutType()
                                         })
                                     }
-                                    composable(route = Screens.MovieDetailsScreen.route) {
+                                    composable(
+                                        route = Screens.MovieDetailsScreen.route,
+                                        enterTransition = {
+                                            slideIntoContainer(
+                                                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                                                animationSpec = tween(700)
+                                            )
+                                        },
+                                        exitTransition = {
+                                            slideOutOfContainer(
+                                                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                                                animationSpec = tween(700)
+                                            )
+                                        },
+                                        popEnterTransition = {
+                                            slideIntoContainer(
+                                                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                                                animationSpec = tween(700)
+                                            )
+                                        },
+                                        popExitTransition = {
+                                            slideOutOfContainer(
+                                                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                                                animationSpec = tween(700)
+                                            )
+                                        }
+                                    ) {
                                         MovieDetailsScreen(
                                             onNavigateBackClick = {
                                                 navController.popBackStack()

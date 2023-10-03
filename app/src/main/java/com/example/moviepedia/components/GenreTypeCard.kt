@@ -13,13 +13,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun GenreTypeCard(
     borderWidth: Dp = 1.dp,
     color: Color = MaterialTheme.colorScheme.onSurface,
-    title : String
+    title: String,
+    fontWeight: FontWeight = FontWeight.Bold,
+    fontSize: TextUnit = TextUnit.Unspecified
 ) {
     Box(
         modifier = Modifier
@@ -28,6 +31,12 @@ fun GenreTypeCard(
             .padding(4.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = title, color = color,fontWeight = FontWeight.Bold)
+        Text(
+            text = title,
+            color = color,
+            fontWeight = fontWeight,
+            fontSize = fontSize,
+            modifier = Modifier.padding(start = 4.dp, end = 4.dp)
+        )
     }
 }

@@ -83,7 +83,9 @@ fun MovieList(
                         language = movie.language,
                         rating = movie.rating,
                         ratingCount = movie.ratingCount,
-                        onClick = {}
+                        onClick = {
+                            navController.navigate(Screens.MovieDetailsScreen.route)
+                        }
                     )
                 }
             }
