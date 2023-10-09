@@ -1,4 +1,4 @@
-package com.example.moviepedia.data.movieDetails
+package com.example.moviepedia.data.remote.movieDetails
 
 data class ProductionCompany(
     val id: Int,

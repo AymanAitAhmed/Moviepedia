@@ -1,4 +1,4 @@
-package com.example.moviepedia.data.movieDetails
+package com.example.moviepedia.data.remote.movieDetails
 
 data class MovieDetails(
     val backdrop_path: String,
