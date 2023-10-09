@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
-import com.example.moviepedia.data.movieDetails.ProductionCompany
+import com.example.moviepedia.data.remote.movieDetails.ProductionCompany
 
 @Composable
 fun ProductionCompaniesSection(

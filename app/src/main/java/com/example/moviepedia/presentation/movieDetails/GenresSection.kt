@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moviepedia.components.GenreTypeCard
 import com.example.moviepedia.components.getEquivalentGenre
-import com.example.moviepedia.data.movieDetails.Genre
+import com.example.moviepedia.data.remote.movieDetails.Genre
 
 @Composable
 fun GenresLazyRow(
