@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.example.moviepedia.R
+import com.example.moviepedia.components.Constants
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +56,7 @@ fun SmallMovieCard(
     ) {
 
         SubcomposeAsyncImage(
-            model = imageURL,
+            model = "${ Constants.IMAGE_BASE_URL}$imageURL",
             contentDescription = "image",
             modifier = Modifier
                 .fillMaxWidth()

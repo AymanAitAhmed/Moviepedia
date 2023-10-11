@@ -12,31 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
 import com.example.moviepedia.components.Screens
+import com.example.moviepedia.data.localDb.movie.MovieEntity
 
 @Composable
 fun MovieList(
     layoutType: Int,
+    list : LazyPagingItems<MovieEntity>,
     navController: NavController
 ) {
-
-    val list = listOf(
-        Movie(0),
-        Movie(1),
-        Movie(2),
-        Movie(3),
-        Movie(4),
-        Movie(5),
-        Movie(6),
-        Movie(7),
-        Movie(8),
-        Movie(9),
-        Movie(10),
-        Movie(11),
-        Movie(12),
-        Movie(13),
-        Movie(14),
-    )
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -49,20 +34,20 @@ fun MovieList(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                items(list.size, key = {
-                    list[it].id
-                }) {
+                items(list.itemCount) {
                     val movie = list[it]
-                    SmallMovieCard(
-                        imageURL = movie.imageURL,
-                        title = movie.title,
-                        language = movie.language,
-                        rating = movie.rating,
-                        ratingCount = movie.ratingCount,
-                        onClick = {
-                            navController.navigate(Screens.MovieDetailsScreen.route)
-                        }
-                    )
+                    movie?.let { movie ->
+                        SmallMovieCard(
+                            imageURL = movie.poster_path,
+                            title = movie.title,
+                            language = movie.original_language,
+                            rating = movie.vote_average.toFloat(),
+                            ratingCount = movie.vote_count,
+                            onClick = {
+                                navController.navigate(Screens.MovieDetailsScreen.route)
+                            }
+                        )
+                    }
                 }
             }
         } else {
@@ -72,21 +57,23 @@ fun MovieList(
                 contentPadding = PaddingValues(4.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(list.size, key = {
-                    list[it].id
-                }) {
+                items(list.itemCount) {
                     val movie = list[it]
-                    LargeMovieCard(
-                        imageURL = movie.imageURL,
-                        title = movie.title,
-                        date = movie.date,
-                        language = movie.language,
-                        rating = movie.rating,
-                        ratingCount = movie.ratingCount,
-                        onClick = {
-                            navController.navigate(Screens.MovieDetailsScreen.route)
-                        }
-                    )
+                    movie?.let {
+                        LargeMovieCard(
+                            imageURL = movie.poster_path,
+                            title = movie.title,
+                            date = movie.release_date,
+                            genresIds = movie.genre_ids,
+                            language = movie.original_language,
+                            rating = movie.vote_average.toFloat(),
+                            ratingCount = movie.vote_count,
+                            onClick = {
+                                navController.navigate(Screens.MovieDetailsScreen.route)
+                            }
+                        )
+
+                    }
                 }
             }
 
@@ -95,14 +82,3 @@ fun MovieList(
     }
 
 }
-
-data class Movie(
-    val id: Int,
-    val imageURL: String = "https://www.themoviedb.org/t/p/w220_and_h330_face/dhjyfcwEoW6jJ4Q7DpZTp6E58GA.jpg",
-    val title: String = "LUCY",
-    val date: String = "2023.12.03",
-    val language: String = "en",
-    val rating: Float = 8.32f,
-    val ratingCount: Int = 120364
-
-)

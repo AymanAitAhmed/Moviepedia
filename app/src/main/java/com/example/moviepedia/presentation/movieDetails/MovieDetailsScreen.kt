@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.moviepedia.data.remote.movieDetails.Genre
-import com.example.moviepedia.data.remote.movieDetails.MovieDetails
+import com.example.moviepedia.data.remote.movieDetails.MovieDetailsResponse
 import com.example.moviepedia.data.remote.movieDetails.ProductionCompany
 import com.example.moviepedia.data.remote.movieDetails.SpokenLanguage
 
@@ -26,7 +26,7 @@ fun MovieDetailsScreen(
 
     val scrollableState = rememberScrollState()
 
-    val movieDetails = MovieDetails(
+    val movieDetailsResponse = MovieDetailsResponse(
         backdrop_path = "",
         genres = listOf(Genre(18), Genre(80)),
         homepage = "",
@@ -85,23 +85,23 @@ fun MovieDetailsScreen(
                 .scrollable(scrollableState, orientation = Orientation.Vertical)
         ) {
             MovieUpperCard(
-                imageURL = movieDetails.poster_path,
-                title = movieDetails.title,
-                date = movieDetails.release_date,
-                duration = movieDetails.runtime,
-                releaseState = movieDetails.status,
-                rating = movieDetails.vote_average.toFloat(),
-                ratingCount = movieDetails.vote_count,
-                popularity = movieDetails.popularity.toFloat()
+                imageURL = movieDetailsResponse.poster_path,
+                title = movieDetailsResponse.title,
+                date = movieDetailsResponse.release_date,
+                duration = movieDetailsResponse.runtime,
+                releaseState = movieDetailsResponse.status,
+                rating = movieDetailsResponse.vote_average.toFloat(),
+                ratingCount = movieDetailsResponse.vote_count,
+                popularity = movieDetailsResponse.popularity.toFloat()
             )
 
-            OverviewSection(movieDetails.overview)
+            OverviewSection(movieDetailsResponse.overview)
 
-            GenresLazyRow(genresList = movieDetails.genres)
+            GenresLazyRow(genresList = movieDetailsResponse.genres)
             Spacer(modifier = Modifier.height(8.dp))
-            LanguagesSpokenLazyRow(languagesList = movieDetails.spoken_languages)
+            LanguagesSpokenLazyRow(languagesList = movieDetailsResponse.spoken_languages)
             Spacer(modifier = Modifier.height(8.dp))
-            ProductionCompaniesSection(productionCompaniesList = movieDetails.production_companies)
+            ProductionCompaniesSection(productionCompaniesList = movieDetailsResponse.production_companies)
         }
     }
 

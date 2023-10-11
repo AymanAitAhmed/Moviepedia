@@ -27,7 +27,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.moviepedia.components.Screens
+import com.example.moviepedia.data.localDb.movie.MovieEntity
 import com.example.moviepedia.presentation.drawer.DrawerContent
 import com.example.moviepedia.presentation.movieDetails.MovieDetailsScreen
 import com.example.moviepedia.presentation.movie_list_template.MovieList
@@ -59,6 +62,8 @@ class MainActivity : ComponentActivity() {
                                 || currentScreen.value?.destination?.route?.lowercase() == Screens.MovieDetailsScreen.route
 
                     val layoutType = viewModel.layoutType.collectAsStateWithLifecycle()
+
+                    val popularMovies = viewModel.popularMovies.collectAsLazyPagingItems()
 
                     ModalNavigationDrawer(
                         modifier = Modifier.fillMaxSize(),
@@ -145,7 +150,7 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
 
-                                    listsGraph(navController = navController, layoutType)
+                                    listsGraph(navController = navController, layoutType,popularMovies)
 
 
                                 }
@@ -160,17 +165,17 @@ class MainActivity : ComponentActivity() {
 }
 
 
-fun NavGraphBuilder.listsGraph(navController: NavController, layoutType: State<Int>) {
+fun NavGraphBuilder.listsGraph(navController: NavController, layoutType: State<Int>,popularMovies : LazyPagingItems<MovieEntity>) {
     navigation(
         startDestination = Screens.TrendingScreen.route,
         route = Screens.ListsGraph.route
     ) {
         composable(route = Screens.TrendingScreen.route) {
-            MovieList(layoutType.value, navController)
+            MovieList(layoutType.value, popularMovies ,navController)
         }
 
         composable(route = Screens.PopularScreen.route) {
-
+            MovieList(layoutType.value, popularMovies ,navController)
         }
 
         composable(route = Screens.TopRatedScreen.route) {

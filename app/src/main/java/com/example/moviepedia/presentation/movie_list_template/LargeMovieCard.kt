@@ -32,7 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.example.moviepedia.R
+import com.example.moviepedia.components.Constants
 import com.example.moviepedia.components.GenreTypeCard
+import com.example.moviepedia.components.toGenreType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +42,7 @@ fun LargeMovieCard(
     imageURL: String,
     title: String,
     date: String,
+    genresIds : List<Int>,
     language: String,
     rating: Float,
     ratingCount: Int,
@@ -61,8 +64,9 @@ fun LargeMovieCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
+            println("${Constants.IMAGE_BASE_URL}$imageURL")
             SubcomposeAsyncImage(
-                model = imageURL,
+                model = "http://image.tmdb.org/t/p/w500/Af4bXE63pVsb2FtbW8uYIyPBadD.jpg",
                 contentDescription = "image",
                 modifier = Modifier
                     .fillMaxWidth(0.25f)
@@ -114,8 +118,8 @@ fun LargeMovieCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    items(5) {
-                        GenreTypeCard(title = "action$it", fontWeight = FontWeight.Light, fontSize = 12.sp)
+                    items(genresIds.size) {
+                        GenreTypeCard(title = genresIds[it].toGenreType(), fontWeight = FontWeight.Light, fontSize = 12.sp)
                     }
                 }
 
