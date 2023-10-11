@@ -1,6 +1,6 @@
 package com.example.moviepedia.data.remote.movieDetails
 
-data class MovieDetails(
+data class MovieDetailsResponse(
     val backdrop_path: String,
     val genres: List<Genre>,
     val homepage: String,
