@@ -53,18 +53,20 @@ class MovieRemoteMediator @Inject constructor(
 
             val movieResponse = moviesApi.getPopularMovies(currentPage)
             val endOfPaginationReached = movieResponse.page == movieResponse.total_pages
-            val prevPage = if (movieResponse.page == 1)null else movieResponse.page -1
-            val nextPage = if (endOfPaginationReached) null else movieResponse.page +1
+            val prevPage = if (movieResponse.page == 1)null else movieResponse.page.minus(1)
+            val nextPage = if (endOfPaginationReached) null else movieResponse.page.plus(1)
 
             movieDatabase.withTransaction {
                 if (loadType == LoadType.REFRESH){
                     movieDao.clearAll()
                     remoteKeysDao.clearAll()
                 }
-
+                //println(movieResponse.results.toString())
                 val keys = movieResponse.results.map {movie ->
-                    MovieRemoteKeys(movie.id,prevPage,nextPage)
+                    MovieRemoteKeys(id = movie.id, prevPage = prevPage, nextPage = nextPage)
                 }
+
+
                 remoteKeysDao.upsertAll(keys)
                 movieDao.upsertAll(movieResponse.results.map {
                     it.toMovieEntity()

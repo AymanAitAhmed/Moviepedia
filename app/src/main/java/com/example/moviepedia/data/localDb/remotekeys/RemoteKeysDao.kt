@@ -1,13 +1,14 @@
 package com.example.moviepedia.data.localDb.remotekeys
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
 
 @Dao
 interface RemoteKeysDao {
 
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertAll( movies : List<MovieRemoteKeys>)
 
     @Query("SELECT * FROM remote_keys WHERE id = :id")

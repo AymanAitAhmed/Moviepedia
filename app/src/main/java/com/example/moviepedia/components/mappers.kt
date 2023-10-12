@@ -5,7 +5,15 @@ import com.example.moviepedia.data.remote.movieLists.Result
 
 fun Result.toMovieEntity(): MovieEntity {
     return MovieEntity(
-        id, genre_ids, original_language, original_title, poster_path, release_date, title, vote_average, vote_count
+        id = id,
+        genre_ids = genre_ids,
+        original_language = original_language,
+        original_title = original_title,
+        poster_path = poster_path,
+        release_date = release_date,
+        title = title,
+        vote_average = vote_average,
+        vote_count = vote_count
     )
 }
 

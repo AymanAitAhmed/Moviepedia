@@ -6,7 +6,8 @@ import com.example.moviepedia.components.Constants
 
 @Entity(tableName = Constants.REMOTE_KEY_TABLE_NAME)
 data class MovieRemoteKeys(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    val DbId : Int? = null,
     val id : Int,
     val prevPage : Int?,
     val nextPage : Int?

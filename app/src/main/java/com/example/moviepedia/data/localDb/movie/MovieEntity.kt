@@ -8,7 +8,8 @@ import com.example.moviepedia.data.localDb.RoomConverters
 @Entity
 @TypeConverters(RoomConverters::class)
 data class MovieEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val DbId : Int? = null,
     val id: Int,
     val genre_ids: List<Int>,
     val original_language: String,
