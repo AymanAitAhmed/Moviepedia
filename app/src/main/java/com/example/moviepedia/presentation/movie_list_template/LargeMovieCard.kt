@@ -64,9 +64,8 @@ fun LargeMovieCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            println("${Constants.IMAGE_BASE_URL}$imageURL")
             SubcomposeAsyncImage(
-                model = "http://image.tmdb.org/t/p/w500/Af4bXE63pVsb2FtbW8uYIyPBadD.jpg",
+                model = "${Constants.IMAGE_BASE_URL}$imageURL",
                 contentDescription = "image",
                 modifier = Modifier
                     .fillMaxWidth(0.25f)
