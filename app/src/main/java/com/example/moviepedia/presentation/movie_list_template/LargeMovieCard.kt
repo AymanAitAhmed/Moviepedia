@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -24,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +31,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.moviepedia.R
 import com.example.moviepedia.components.Constants
 import com.example.moviepedia.components.GenreTypeCard
@@ -49,6 +54,7 @@ fun LargeMovieCard(
     onClick: () -> Unit
 ) {
 
+    val lottieComposition = rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.animation_lnnc2so3))
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,14 +71,28 @@ fun LargeMovieCard(
             horizontalArrangement = Arrangement.Start
         ) {
             SubcomposeAsyncImage(
-                model = "${Constants.IMAGE_BASE_URL}$imageURL",
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("${Constants.IMAGE_BASE_URL}$imageURL")
+                    .crossfade(1000)
+                    .build()
+                ,
                 contentDescription = "image",
                 modifier = Modifier
                     .fillMaxWidth(0.25f)
                     .fillMaxHeight(),
                 contentScale = ContentScale.Crop,
                 loading = {
-                    CircularProgressIndicator()
+                    LottieAnimation(
+                        composition = lottieComposition.value,
+                        iterations = LottieConstants.IterateForever
+                    )
+                },
+                error = {
+                    Icon(painter = painterResource(
+                        id = R.drawable.baseline_image_not_supported_24),
+                        contentDescription = "poster error",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
                 }
             )
 

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import com.example.moviepedia.components.Screens
 import com.example.moviepedia.data.localDb.movie.MovieEntity
 
@@ -34,7 +35,7 @@ fun MovieList(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                items(list.itemCount) {
+                items(count = list.itemCount,key = list.itemKey{it.DbId!!}) {
                     val movie = list[it]
                     movie?.let { movie ->
                         SmallMovieCard(
@@ -57,7 +58,7 @@ fun MovieList(
                 contentPadding = PaddingValues(4.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(list.itemCount) {
+                items(count = list.itemCount,key = list.itemKey{it.DbId!!}) {
                     val movie = list[it]
                     movie?.let {
                         LargeMovieCard(
