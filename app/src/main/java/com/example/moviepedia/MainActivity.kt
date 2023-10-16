@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,7 +30,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.moviepedia.components.Screens
 import com.example.moviepedia.data.localDb.movie.MovieEntity
-import com.example.moviepedia.presentation.drawer.DrawerContent
+import com.example.moviepedia.presentation.drawer.MyBottomNavBar
 import com.example.moviepedia.presentation.movieDetails.MovieDetailsScreen
 import com.example.moviepedia.presentation.movie_list_template.MovieList
 import com.example.moviepedia.presentation.movie_list_template.MovieListViewModel
@@ -65,95 +64,96 @@ class MainActivity : ComponentActivity() {
 
                     val popularMovies = viewModel.popularMovies.collectAsLazyPagingItems()
 
-                    ModalNavigationDrawer(
-                        modifier = Modifier.fillMaxSize(),
-                        drawerContent = {
-                            DrawerContent()
+                    Scaffold(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .nestedScroll(scrollBehavior.nestedScrollConnection),
+                        topBar = {
+                            if (!drawerTopAppBarEnabled) {
+                                MyTopAppBar(
+                                    title = "${currentScreen.value?.destination?.route}",
+                                    isLayoutGrid = layoutType.value != 0,
+                                    scrollBehavior = scrollBehavior,
+                                    onSearchClick = { /*TODO*/ },
+                                    onChangeListLayoutClick = {
+                                        viewModel.flipLayoutType()
+                                    }
+                                )
+                            }
                         },
-                        gesturesEnabled = !drawerTopAppBarEnabled
-                    ) {
-                        Scaffold(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .nestedScroll(scrollBehavior.nestedScrollConnection),
-                            topBar = {
-                                if (!drawerTopAppBarEnabled) {
-                                    MyTopAppBar(
-                                        title = "${currentScreen.value?.destination?.route}",
-                                        isLayoutGrid = layoutType.value != 0,
-                                        scrollBehavior = scrollBehavior,
-                                        onShowDrawerClick = { /*TODO*/ },
-                                        onSearchClick = { /*TODO*/ },
-                                        onChangeListLayoutClick = {
-                                            viewModel.flipLayoutType()
+                        bottomBar = {
+                            if (!drawerTopAppBarEnabled) {
+                                MyBottomNavBar(
+                                    onBottomNavBarItemClick = {
+                                        navController.navigate(it)
+                                    }
+                                )
+                            }
+
+                        },
+                        containerColor = MaterialTheme.colorScheme.background
+                    ) { paddingValues ->
+                        Box(
+                            modifier = Modifier.padding(paddingValues),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            NavHost(
+                                navController = navController,
+                                startDestination = Screens.SplashScreen.route
+                            ) {
+
+                                composable(
+                                    route = Screens.SplashScreen.route,
+                                    exitTransition = {
+                                        slideOutOfContainer(
+                                            towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                                            animationSpec = tween(700, 20)
+                                        )
+                                    }) {
+                                    SplashScreen(navController, initializingOperation = {
+                                        viewModel.getCurrentLayoutType()
+                                    })
+                                }
+                                composable(
+                                    route = Screens.MovieDetailsScreen.route,
+                                    enterTransition = {
+                                        slideIntoContainer(
+                                            towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                                            animationSpec = tween(700)
+                                        )
+                                    },
+                                    exitTransition = {
+                                        slideOutOfContainer(
+                                            towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                                            animationSpec = tween(700)
+                                        )
+                                    },
+                                    popEnterTransition = {
+                                        slideIntoContainer(
+                                            towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                                            animationSpec = tween(700)
+                                        )
+                                    },
+                                    popExitTransition = {
+                                        slideOutOfContainer(
+                                            towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                                            animationSpec = tween(700)
+                                        )
+                                    }
+                                ) {
+                                    MovieDetailsScreen(
+                                        onNavigateBackClick = {
+                                            navController.popBackStack()
+                                        },
+                                        onSearchClick = {
+
                                         }
                                     )
                                 }
-                            },
-                            containerColor = MaterialTheme.colorScheme.background
-                        ) { paddingValues ->
-                            Box(
-                                modifier = Modifier.padding(paddingValues),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                NavHost(
-                                    navController = navController,
-                                    startDestination = Screens.SplashScreen.route
-                                ) {
 
-                                    composable(
-                                        route = Screens.SplashScreen.route,
-                                        exitTransition = {
-                                            slideOutOfContainer(
-                                                towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                                                animationSpec = tween(700, 20)
-                                            )
-                                        }) {
-                                        SplashScreen(navController, initializingOperation = {
-                                            viewModel.getCurrentLayoutType()
-                                        })
-                                    }
-                                    composable(
-                                        route = Screens.MovieDetailsScreen.route,
-                                        enterTransition = {
-                                            slideIntoContainer(
-                                                towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                                                animationSpec = tween(700)
-                                            )
-                                        },
-                                        exitTransition = {
-                                            slideOutOfContainer(
-                                                towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                                                animationSpec = tween(700)
-                                            )
-                                        },
-                                        popEnterTransition = {
-                                            slideIntoContainer(
-                                                towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                                                animationSpec = tween(700)
-                                            )
-                                        },
-                                        popExitTransition = {
-                                            slideOutOfContainer(
-                                                towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                                                animationSpec = tween(700)
-                                            )
-                                        }
-                                    ) {
-                                        MovieDetailsScreen(
-                                            onNavigateBackClick = {
-                                                navController.popBackStack()
-                                            },
-                                            onSearchClick = {
-
-                                            }
-                                        )
-                                    }
-
-                                    listsGraph(navController = navController, layoutType,popularMovies)
+                                listsGraph(navController = navController, layoutType, popularMovies)
 
 
-                                }
                             }
                         }
                     }
@@ -165,17 +165,21 @@ class MainActivity : ComponentActivity() {
 }
 
 
-fun NavGraphBuilder.listsGraph(navController: NavController, layoutType: State<Int>,popularMovies : LazyPagingItems<MovieEntity>) {
+fun NavGraphBuilder.listsGraph(
+    navController: NavController,
+    layoutType: State<Int>,
+    popularMovies: LazyPagingItems<MovieEntity>
+) {
     navigation(
         startDestination = Screens.TrendingScreen.route,
         route = Screens.ListsGraph.route
     ) {
         composable(route = Screens.TrendingScreen.route) {
-            MovieList(layoutType.value, popularMovies ,navController)
+            MovieList(layoutType.value, popularMovies, navController)
         }
 
         composable(route = Screens.PopularScreen.route) {
-            MovieList(layoutType.value, popularMovies ,navController)
+            MovieList(layoutType.value, popularMovies, navController)
         }
 
         composable(route = Screens.TopRatedScreen.route) {
