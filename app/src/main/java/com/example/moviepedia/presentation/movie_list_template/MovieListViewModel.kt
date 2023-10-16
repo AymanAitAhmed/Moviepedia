@@ -19,7 +19,7 @@ class MovieListViewModel @Inject constructor(
     private val _layoutType = MutableStateFlow(0)
     val layoutType = _layoutType.asStateFlow()
 
-    val popularMovies = pagingRepository.getAllMovies()
+    val popularMovies = pagingRepository.getAllMovies(viewModelScope)
 
     fun getCurrentLayoutType() {
         viewModelScope.launch {
