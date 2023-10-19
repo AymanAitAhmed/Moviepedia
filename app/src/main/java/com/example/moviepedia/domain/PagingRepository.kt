@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface PagingRepository {
 
-    fun getAllMovies(coroutineScope: CoroutineScope) : Flow<PagingData<MovieEntity>>
+    fun getPopularMovies(coroutineScope: CoroutineScope) : Flow<PagingData<MovieEntity>>
+
+    fun getUpComingMovies(coroutineScope: CoroutineScope) : Flow<PagingData<MovieEntity>>
 
 }

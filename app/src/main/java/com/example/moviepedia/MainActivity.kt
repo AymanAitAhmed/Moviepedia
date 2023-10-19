@@ -38,6 +38,7 @@ import com.example.moviepedia.presentation.movie_list_template.MyTopAppBar
 import com.example.moviepedia.presentation.splashscreen.SplashScreen
 import com.example.moviepedia.ui.theme.MoviepediaTheme
 import dagger.hilt.android.AndroidEntryPoint
+import com.example.moviepedia.listsGraph as listsGraph1
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -63,6 +64,7 @@ class MainActivity : ComponentActivity() {
                     val layoutType = viewModel.layoutType.collectAsStateWithLifecycle()
 
                     val popularMovies = viewModel.popularMovies.collectAsLazyPagingItems()
+                    val upComingMovies = viewModel.upComingMovies.collectAsLazyPagingItems()
 
                     Scaffold(
                         modifier = Modifier
@@ -151,7 +153,12 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
 
-                                listsGraph(navController = navController, layoutType, popularMovies)
+                                listsGraph1(
+                                    navController = navController,
+                                    layoutType = layoutType,
+                                    popularMovies = popularMovies,
+                                    upComingMovies = upComingMovies
+                                )
 
 
                             }
@@ -168,7 +175,8 @@ class MainActivity : ComponentActivity() {
 fun NavGraphBuilder.listsGraph(
     navController: NavController,
     layoutType: State<Int>,
-    popularMovies: LazyPagingItems<MovieEntity>
+    popularMovies: LazyPagingItems<MovieEntity>,
+    upComingMovies : LazyPagingItems<MovieEntity>
 ) {
     navigation(
         startDestination = Screens.TrendingScreen.route,
@@ -187,7 +195,12 @@ fun NavGraphBuilder.listsGraph(
         }
 
         composable(route = Screens.UpComingScreen.route) {
-
+            println(upComingMovies.get(1))
+            MovieList(
+                layoutType = layoutType.value,
+                list = upComingMovies,
+                navController = navController
+            )
         }
     }
 }

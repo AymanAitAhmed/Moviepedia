@@ -6,7 +6,7 @@ import com.example.moviepedia.components.toMovieEntity
 import com.example.moviepedia.data.localDb.movie.MovieEntity
 import com.example.moviepedia.data.remote.MoviesApi
 
-class MoviePagingSource(
+class PopularMoviesSource(
     private val moviesApi: MoviesApi
 ) : PagingSource<Int, MovieEntity>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieEntity> {
