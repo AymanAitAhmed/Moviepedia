@@ -29,12 +29,12 @@ fun MyBottomNavBar(onBottomNavBarItemClick: (String) -> Unit) {
             unselectedIcon = R.drawable.outline_popular_24
         ),
         MyBottomNavBarItem(
-            title = Screens.NowPlayingScreen.route.takeLast(7),
+            title = Screens.NowPlayingScreen.route,
             selectedIcon = R.drawable.baseline_now_playing_24,
             unselectedIcon = R.drawable.baseline_now_playing_24
         ),
         MyBottomNavBarItem(
-            title = Screens.UpComingScreen.route.takeLast(6),
+            title = Screens.UpComingScreen.route,
             selectedIcon = R.drawable.baseline_upcoming_24,
             unselectedIcon = R.drawable.outline_upcoming_24
         ),
@@ -56,7 +56,11 @@ fun MyBottomNavBar(onBottomNavBarItemClick: (String) -> Unit) {
             ){
 
         itemsList.forEachIndexed { index, item ->
-
+            val title = when(item.title){
+                Screens.UpComingScreen.route -> Screens.UpComingScreen.route.takeLast(6)
+                Screens.NowPlayingScreen.route -> Screens.NowPlayingScreen.route.takeLast(7)
+                else -> item.title
+            }
             val itemIsSelected = selectedItemIndex.intValue == index
             NavigationBarItem(
                 selected = itemIsSelected,
@@ -73,7 +77,7 @@ fun MyBottomNavBar(onBottomNavBarItemClick: (String) -> Unit) {
                     )
                 },
                 label = {
-                    Text(text = item.title)
+                    Text(text = title)
                 },
                 colors = NavigationBarItemDefaults.colors(indicatorColor = redLight)
             )

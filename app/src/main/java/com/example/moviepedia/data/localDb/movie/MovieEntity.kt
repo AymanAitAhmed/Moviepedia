@@ -3,12 +3,9 @@ package com.example.moviepedia.data.localDb.movie
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.moviepedia.data.localDb.RoomConverters
 
-@Entity
-@TypeConverters(RoomConverters::class)
+
 data class MovieEntity(
-    @PrimaryKey(autoGenerate = true)
     val DbId : Int? = null,
     val id: Int,
     val genre_ids: List<Int>,

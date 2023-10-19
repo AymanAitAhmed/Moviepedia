@@ -1,10 +1,8 @@
 package com.example.moviepedia.di
 
 import android.content.Context
-import androidx.room.Room
 import com.example.moviepedia.components.Constants
 import com.example.moviepedia.data.datastore.LayoutType
-import com.example.moviepedia.data.localDb.MovieDatabase
 import com.example.moviepedia.data.paging.PagingRepositoryImpl
 import com.example.moviepedia.data.remote.MoviesApi
 import com.example.moviepedia.domain.PagingRepository
@@ -29,15 +27,6 @@ object Module {
         return LayoutType(context)
     }
 
-    @Provides
-    @Singleton
-    fun provideLocalDatabase(@ApplicationContext context: Context):MovieDatabase{
-        return Room.databaseBuilder(
-            context,
-            MovieDatabase::class.java,
-            Constants.DATABASE_NAME
-        ).build()
-    }
 
     @Provides
     @Singleton
@@ -68,10 +57,9 @@ object Module {
     @Provides
     @Singleton
     fun providePagingRepository(
-        moviesApi: MoviesApi,
-        movieDatabase: MovieDatabase
+        moviesApi: MoviesApi
     ):PagingRepository{
-        return PagingRepositoryImpl(movieDatabase,moviesApi)
+        return PagingRepositoryImpl(moviesApi)
     }
 
 }
