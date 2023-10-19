@@ -19,11 +19,6 @@ fun MyBottomNavBar(onBottomNavBarItemClick: (String) -> Unit) {
 
     val itemsList = listOf(
         MyBottomNavBarItem(
-            title = Screens.TrendingScreen.route,
-            selectedIcon = R.drawable.baseline_trending_24,
-            unselectedIcon = R.drawable.outline_trending_24
-        ),
-        MyBottomNavBarItem(
             title = Screens.PopularScreen.route,
             selectedIcon = R.drawable.baseline_popular_24,
             unselectedIcon = R.drawable.outline_popular_24

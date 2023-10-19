@@ -21,17 +21,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.moviepedia.components.Screens
 import com.example.moviepedia.data.localDb.movie.MovieEntity
 import com.example.moviepedia.presentation.drawer.MyBottomNavBar
 import com.example.moviepedia.presentation.movieDetails.MovieDetailsScreen
+import com.example.moviepedia.presentation.movieDetails.MovieDetailsViewModel
 import com.example.moviepedia.presentation.movie_list_template.MovieList
 import com.example.moviepedia.presentation.movie_list_template.MovieListViewModel
 import com.example.moviepedia.presentation.movie_list_template.MyTopAppBar
@@ -48,7 +51,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             MoviepediaTheme(dynamicColor = false) {
                 // A surface container using the 'background' color from the theme
-                val viewModel: MovieListViewModel = hiltViewModel()
+                val movieListViewModel: MovieListViewModel = hiltViewModel()
+
+                val movieDetailsViewModel : MovieDetailsViewModel = hiltViewModel()
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -58,13 +64,15 @@ class MainActivity : ComponentActivity() {
                     val currentScreen = navController.currentBackStackEntryAsState()
                     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
                     val drawerTopAppBarEnabled =
-                        currentScreen.value?.destination?.route?.lowercase() == Screens.SplashScreen.route.lowercase()
-                                || currentScreen.value?.destination?.route?.lowercase() == Screens.MovieDetailsScreen.route
+                        currentScreen.value?.destination?.route?.lowercase() == Screens.SplashScreen.route.lowercase() ||
+                                currentScreen.value?.destination?.route?.contains(Screens.MovieDetailsScreen.route.lowercase(),ignoreCase = true) == true
 
-                    val layoutType = viewModel.layoutType.collectAsStateWithLifecycle()
+                    val layoutType = movieListViewModel.layoutType.collectAsStateWithLifecycle()
 
-                    val popularMovies = viewModel.popularMovies.collectAsLazyPagingItems()
-                    val upComingMovies = viewModel.upComingMovies.collectAsLazyPagingItems()
+                    val popularMovies = movieListViewModel.popularMovies.collectAsLazyPagingItems()
+                    val upComingMovies = movieListViewModel.upComingMovies.collectAsLazyPagingItems()
+                    val topRatedMovies = movieListViewModel.topRatedMovies.collectAsLazyPagingItems()
+                    val nowPlayingMovies = movieListViewModel.nowPlayingMovies.collectAsLazyPagingItems()
 
                     Scaffold(
                         modifier = Modifier
@@ -78,7 +86,7 @@ class MainActivity : ComponentActivity() {
                                     scrollBehavior = scrollBehavior,
                                     onSearchClick = { /*TODO*/ },
                                     onChangeListLayoutClick = {
-                                        viewModel.flipLayoutType()
+                                        movieListViewModel.flipLayoutType()
                                     }
                                 )
                             }
@@ -113,11 +121,12 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }) {
                                     SplashScreen(navController, initializingOperation = {
-                                        viewModel.getCurrentLayoutType()
+                                        movieListViewModel.getCurrentLayoutType()
                                     })
                                 }
                                 composable(
-                                    route = Screens.MovieDetailsScreen.route,
+                                    route = "${ Screens.MovieDetailsScreen.route }/{movie_id}",
+                                    arguments = listOf(navArgument("movie_id"){type = NavType.IntType}),
                                     enterTransition = {
                                         slideIntoContainer(
                                             towards = AnimatedContentTransitionScope.SlideDirection.Left,
@@ -143,7 +152,11 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
                                 ) {
+                                    movieDetailsViewModel.setMovieId(it.arguments?.getInt("movie_id")!!)
+                                    movieDetailsViewModel.getMovieDetails()
+                                    val movieDetails = movieDetailsViewModel.movieDetails.collectAsStateWithLifecycle()
                                     MovieDetailsScreen(
+                                        movieDetails = movieDetails.value,
                                         onNavigateBackClick = {
                                             navController.popBackStack()
                                         },
@@ -157,14 +170,15 @@ class MainActivity : ComponentActivity() {
                                     navController = navController,
                                     layoutType = layoutType,
                                     popularMovies = popularMovies,
-                                    upComingMovies = upComingMovies
+                                    upComingMovies = upComingMovies,
+                                    topRatedMovies = topRatedMovies,
+                                    nowPlayingMovies = nowPlayingMovies
                                 )
 
 
                             }
                         }
                     }
-
                 }
             }
         }
@@ -176,14 +190,16 @@ fun NavGraphBuilder.listsGraph(
     navController: NavController,
     layoutType: State<Int>,
     popularMovies: LazyPagingItems<MovieEntity>,
-    upComingMovies : LazyPagingItems<MovieEntity>
+    upComingMovies : LazyPagingItems<MovieEntity>,
+    topRatedMovies : LazyPagingItems<MovieEntity>,
+    nowPlayingMovies : LazyPagingItems<MovieEntity>,
 ) {
     navigation(
-        startDestination = Screens.TrendingScreen.route,
+        startDestination = Screens.PopularScreen.route,
         route = Screens.ListsGraph.route
     ) {
-        composable(route = Screens.TrendingScreen.route) {
-            MovieList(layoutType.value, popularMovies, navController)
+        composable(route = Screens.NowPlayingScreen.route) {
+            MovieList(layoutType.value, nowPlayingMovies, navController)
         }
 
         composable(route = Screens.PopularScreen.route) {
@@ -191,11 +207,14 @@ fun NavGraphBuilder.listsGraph(
         }
 
         composable(route = Screens.TopRatedScreen.route) {
-
+            MovieList(
+                layoutType = layoutType.value,
+                list = topRatedMovies,
+                navController = navController
+            )
         }
 
         composable(route = Screens.UpComingScreen.route) {
-            println(upComingMovies.get(1))
             MovieList(
                 layoutType = layoutType.value,
                 list = upComingMovies,

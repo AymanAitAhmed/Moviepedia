@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.example.moviepedia.R
+import com.example.moviepedia.components.Constants
 
 @Composable
 fun MovieUpperCard(
@@ -49,7 +50,7 @@ fun MovieUpperCard(
         horizontalArrangement = Arrangement.Start
     ) {
         SubcomposeAsyncImage(
-            model = "https://image.tmdb.org/t/p/w500$imageURL",
+            model = "${Constants.IMAGE_BASE_URL}$imageURL",
             contentDescription = "poster",
             modifier = Modifier
                 .fillMaxWidth(0.3f)

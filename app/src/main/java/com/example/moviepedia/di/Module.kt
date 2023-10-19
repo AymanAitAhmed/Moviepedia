@@ -5,6 +5,8 @@ import com.example.moviepedia.components.Constants
 import com.example.moviepedia.data.datastore.LayoutType
 import com.example.moviepedia.data.paging.PagingRepositoryImpl
 import com.example.moviepedia.data.remote.MoviesApi
+import com.example.moviepedia.data.remote.NonPagingApiRepositoryImpl
+import com.example.moviepedia.domain.NonPagingApiRepository
 import com.example.moviepedia.domain.PagingRepository
 import dagger.Module
 import dagger.Provides
@@ -60,6 +62,14 @@ object Module {
         moviesApi: MoviesApi
     ):PagingRepository{
         return PagingRepositoryImpl(moviesApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNonPagingApiRepository(
+        moviesApi: MoviesApi
+    ):NonPagingApiRepository{
+        return NonPagingApiRepositoryImpl(moviesApi)
     }
 
 }

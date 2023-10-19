@@ -1,7 +1,6 @@
 package com.example.moviepedia.data.remote.movieDetails
 
 data class MovieDetailsResponse(
-    val backdrop_path: String,
     val genres: List<Genre>,
     val homepage: String,
     val original_title: String,
@@ -15,5 +14,6 @@ data class MovieDetailsResponse(
     val status: String,
     val title: String,
     val vote_average: Double,
-    val vote_count: Int
+    val vote_count: Int,
+    val error : String? = null
 )

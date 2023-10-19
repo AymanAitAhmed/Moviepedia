@@ -23,6 +23,10 @@ class MovieListViewModel @Inject constructor(
 
     val upComingMovies = pagingRepository.getUpComingMovies(viewModelScope)
 
+    val topRatedMovies = pagingRepository.getTopRatedMovies(viewModelScope)
+
+    val nowPlayingMovies = pagingRepository.getNowPlayingMovies(viewModelScope)
+
     fun getCurrentLayoutType() {
         viewModelScope.launch {
             layoutTypeDatastore.currentLayoutType.collect { layoutType ->

@@ -11,4 +11,8 @@ interface PagingRepository {
 
     fun getUpComingMovies(coroutineScope: CoroutineScope) : Flow<PagingData<MovieEntity>>
 
+    fun getTopRatedMovies(coroutineScope: CoroutineScope) : Flow<PagingData<MovieEntity>>
+
+    fun getNowPlayingMovies(coroutineScope: CoroutineScope) : Flow<PagingData<MovieEntity>>
+
 }
