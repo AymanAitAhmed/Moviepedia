@@ -35,7 +35,9 @@ fun MovieList(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                items(count = list.itemCount,key = list.itemKey{it.DbId!!}) {
+                items(
+                    count = list.itemCount
+                ) {
                     val movie = list[it]
                     movie?.let { movie ->
                         SmallMovieCard(

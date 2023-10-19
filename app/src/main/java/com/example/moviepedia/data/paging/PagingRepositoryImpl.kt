@@ -22,10 +22,6 @@ class PagingRepositoryImpl @Inject constructor(
         val pagingSourceFactory = { movieDatabase.movieDao.pagingSource() }
         return Pager(
             config = PagingConfig(20),
-            remoteMediator = MovieRemoteMediator(
-                movieDatabase = movieDatabase,
-                moviesApi = moviesApi
-            ),
             pagingSourceFactory = pagingSourceFactory
         ).flow.cachedIn(coroutineScope)
     }
