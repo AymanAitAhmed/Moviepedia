@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemKey
 import com.example.moviepedia.components.Screens
 import com.example.moviepedia.data.localDb.movie.MovieEntity
 
@@ -34,7 +33,7 @@ fun MovieList(
     ) {
         AnimatedVisibility(
             visible = layoutType == 0,
-            enter = slideInHorizontally(animationSpec = tween(700,50)),
+            enter = slideInHorizontally(animationSpec = tween(700,80)),
             exit = slideOutHorizontally(animationSpec = tween(600), targetOffsetX = {it/2})
         ) {
             LazyVerticalGrid(
@@ -65,8 +64,8 @@ fun MovieList(
         }
         AnimatedVisibility(
             visible = layoutType != 0,
-            enter = slideInHorizontally(animationSpec = tween(700,50)),
-            exit = slideOutHorizontally(animationSpec = tween(600), targetOffsetX = {it/2})
+            enter = slideInHorizontally(animationSpec = tween(700,80)),
+            exit = slideOutHorizontally(animationSpec = tween(0), targetOffsetX = {it/2})
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),

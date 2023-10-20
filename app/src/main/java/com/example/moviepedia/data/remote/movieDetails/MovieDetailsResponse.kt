@@ -15,5 +15,6 @@ data class MovieDetailsResponse(
     val title: String,
     val vote_average: Double,
     val vote_count: Int,
+    val backdrop_path : String? = null,
     val error : String? = null
 )
