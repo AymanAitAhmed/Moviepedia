@@ -1,7 +1,7 @@
 package com.example.moviepedia.domain
 
 import androidx.paging.PagingData
-import com.example.moviepedia.data.localDb.movie.MovieEntity
+import com.example.moviepedia.domain.model.MovieEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 

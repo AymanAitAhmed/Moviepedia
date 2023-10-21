@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import com.example.moviepedia.components.Screens
-import com.example.moviepedia.data.localDb.movie.MovieEntity
+import com.example.moviepedia.domain.model.MovieEntity
 
 @Composable
 fun MovieList(

@@ -1,6 +1,6 @@
 package com.example.moviepedia.components
 
-import com.example.moviepedia.data.localDb.movie.MovieEntity
+import com.example.moviepedia.domain.model.MovieEntity
 import com.example.moviepedia.data.remote.movieLists.Result
 
 fun Result.toMovieEntity(): MovieEntity {

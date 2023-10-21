@@ -1,4 +1,4 @@
-package com.example.moviepedia.presentation.drawer
+package com.example.moviepedia.presentation.bottomnav
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.painterResource
 import com.example.moviepedia.R
+import com.example.moviepedia.components.Constants
 import com.example.moviepedia.components.Screens
 import com.example.moviepedia.ui.theme.redLight
 
@@ -41,10 +42,6 @@ fun MyBottomNavBar(onBottomNavBarItemClick: (String) -> Unit) {
 
         )
 
-    val selectedItemIndex = rememberSaveable {
-        mutableIntStateOf(0)
-    }
-
     NavigationBar (
         contentColor = MaterialTheme.colorScheme.onBackground,
         containerColor = MaterialTheme.colorScheme.surface
@@ -56,11 +53,11 @@ fun MyBottomNavBar(onBottomNavBarItemClick: (String) -> Unit) {
                 Screens.NowPlayingScreen.route -> Screens.NowPlayingScreen.route.takeLast(7)
                 else -> item.title
             }
-            val itemIsSelected = selectedItemIndex.intValue == index
+            val itemIsSelected = Constants.BOTTOM_NAV_SELECTED_INDEX== index
             NavigationBarItem(
                 selected = itemIsSelected,
                 onClick = {
-                    selectedItemIndex.intValue = index
+                    Constants.BOTTOM_NAV_SELECTED_INDEX = index
                     onBottomNavBarItemClick(item.title)
                 },
                 icon = {

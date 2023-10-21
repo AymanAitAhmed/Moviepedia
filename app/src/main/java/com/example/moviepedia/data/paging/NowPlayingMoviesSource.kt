@@ -3,7 +3,7 @@ package com.example.moviepedia.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.moviepedia.components.toMovieEntity
-import com.example.moviepedia.data.localDb.movie.MovieEntity
+import com.example.moviepedia.domain.model.MovieEntity
 import com.example.moviepedia.data.remote.MoviesApi
 
 class NowPlayingMoviesSource(

@@ -7,7 +7,7 @@ package com.example.moviepedia.data.paging
 //import androidx.room.withTransaction
 //import com.example.moviepedia.components.toMovieEntity
 //import com.example.moviepedia.data.localDb.MovieDatabase
-//import com.example.moviepedia.data.localDb.movie.MovieEntity
+//import com.example.moviepedia.domain.model.MovieEntity
 //import com.example.moviepedia.data.localDb.remotekeys.MovieRemoteKeys
 //import com.example.moviepedia.data.remote.MoviesApi
 //import retrofit2.HttpException

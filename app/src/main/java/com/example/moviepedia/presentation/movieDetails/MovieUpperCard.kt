@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.example.moviepedia.R
 import com.example.moviepedia.components.Constants
 
@@ -50,7 +52,10 @@ fun MovieUpperCard(
         horizontalArrangement = Arrangement.Start
     ) {
         SubcomposeAsyncImage(
-            model = "${Constants.IMAGE_BASE_URL}$imageURL",
+            model = ImageRequest.Builder(LocalContext.current)
+                .data("${Constants.IMAGE_BASE_URL}${imageURL}")
+                .crossfade(1000)
+                .build(),
             contentDescription = "poster",
             modifier = Modifier
                 .fillMaxWidth(0.3f)

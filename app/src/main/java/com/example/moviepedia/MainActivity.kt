@@ -31,8 +31,8 @@ import androidx.navigation.navArgument
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.moviepedia.components.Screens
-import com.example.moviepedia.data.localDb.movie.MovieEntity
-import com.example.moviepedia.presentation.drawer.MyBottomNavBar
+import com.example.moviepedia.domain.model.MovieEntity
+import com.example.moviepedia.presentation.bottomnav.MyBottomNavBar
 import com.example.moviepedia.presentation.movieDetails.MovieDetailsScreen
 import com.example.moviepedia.presentation.movieDetails.MovieDetailsViewModel
 import com.example.moviepedia.presentation.movie_list_template.MovieList

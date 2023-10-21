@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.moviepedia.data.localDb.movie.MovieEntity
+import com.example.moviepedia.domain.model.MovieEntity
 import com.example.moviepedia.data.remote.MoviesApi
 import com.example.moviepedia.domain.PagingRepository
 import kotlinx.coroutines.CoroutineScope

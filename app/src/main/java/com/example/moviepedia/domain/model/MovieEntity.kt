@@ -1,4 +1,4 @@
-package com.example.moviepedia.data.localDb.movie
+package com.example.moviepedia.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
