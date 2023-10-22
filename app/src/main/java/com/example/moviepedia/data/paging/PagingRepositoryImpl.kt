@@ -43,5 +43,14 @@ class PagingRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(20),
             pagingSourceFactory = pagingSourceFactory
-        ).flow.cachedIn(coroutineScope)    }
+        ).flow.cachedIn(coroutineScope)
+    }
+
+    override fun searchMovies(coroutineScope: CoroutineScope,query : String): Flow<PagingData<MovieEntity>> {
+        val pagingSourceFactory = { SearchMoviesSource(moviesApi,query) }
+        return Pager(
+            config = PagingConfig(20),
+            pagingSourceFactory = pagingSourceFactory
+        ).flow.cachedIn(coroutineScope)
+    }
 }

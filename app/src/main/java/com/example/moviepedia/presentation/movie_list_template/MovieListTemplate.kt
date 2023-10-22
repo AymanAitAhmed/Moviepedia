@@ -48,11 +48,11 @@ fun MovieList(
                     val movie = list[it]
                     movie?.let { movie ->
                         SmallMovieCard(
-                            imageURL = movie.poster_path,
-                            title = movie.title,
-                            language = movie.original_language,
-                            rating = movie.vote_average.toFloat(),
-                            ratingCount = movie.vote_count,
+                            imageURL = movie.poster_path ?: "",
+                            title = movie.title ?: "",
+                            language = movie.original_language ?: "",
+                            rating = movie.vote_average?.toFloat() ?: 0.0f,
+                            ratingCount = movie.vote_count ?: 0,
                             onClick = {
                                 println(movie.id)
                                 navController.navigate("${ Screens.MovieDetailsScreen.route }/${movie.id}")
@@ -77,13 +77,13 @@ fun MovieList(
                     val movie = list[it]
                     movie?.let {
                         LargeMovieCard(
-                            imageURL = movie.poster_path,
-                            title = movie.title,
-                            date = movie.release_date,
-                            genresIds = movie.genre_ids,
-                            language = movie.original_language,
-                            rating = movie.vote_average.toFloat(),
-                            ratingCount = movie.vote_count,
+                            imageURL = movie.poster_path ?: "",
+                            title = movie.title ?: "",
+                            date = movie.release_date ?: "",
+                            genresIds = movie.genre_ids ?: listOf(),
+                            language = movie.original_language ?: "",
+                            rating = movie.vote_average?.toFloat() ?: 0.0f,
+                            ratingCount = movie.vote_count ?: 0,
                             onClick = {
                                 navController.navigate(Screens.MovieDetailsScreen.route)
                             }

@@ -15,4 +15,6 @@ interface PagingRepository {
 
     fun getNowPlayingMovies(coroutineScope: CoroutineScope) : Flow<PagingData<MovieEntity>>
 
+    fun searchMovies(coroutineScope: CoroutineScope, query : String) : Flow<PagingData<MovieEntity>>
+
 }

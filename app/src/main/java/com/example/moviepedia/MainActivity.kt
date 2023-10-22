@@ -14,6 +14,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -28,6 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.moviepedia.components.Screens
@@ -38,6 +41,8 @@ import com.example.moviepedia.presentation.movieDetails.MovieDetailsViewModel
 import com.example.moviepedia.presentation.movie_list_template.MovieList
 import com.example.moviepedia.presentation.movie_list_template.MovieListViewModel
 import com.example.moviepedia.presentation.movie_list_template.MyTopAppBar
+import com.example.moviepedia.presentation.searchScreen.MySearchBar
+import com.example.moviepedia.presentation.searchScreen.SearchBarViewModel
 import com.example.moviepedia.presentation.splashscreen.SplashScreen
 import com.example.moviepedia.ui.theme.MoviepediaTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +58,9 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 val movieListViewModel: MovieListViewModel = hiltViewModel()
 
-                val movieDetailsViewModel : MovieDetailsViewModel = hiltViewModel()
+                val movieDetailsViewModel: MovieDetailsViewModel = hiltViewModel()
+
+                val searchBarViewModel: SearchBarViewModel = hiltViewModel()
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -65,14 +72,24 @@ class MainActivity : ComponentActivity() {
                     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
                     val drawerTopAppBarEnabled =
                         currentScreen.value?.destination?.route?.lowercase() == Screens.SplashScreen.route.lowercase() ||
-                                currentScreen.value?.destination?.route?.contains(Screens.MovieDetailsScreen.route.lowercase(),ignoreCase = true) == true
+                                currentScreen.value?.destination?.route?.contains(
+                                    Screens.MovieDetailsScreen.route.lowercase(),
+                                    ignoreCase = true
+                                ) == true
 
                     val layoutType = movieListViewModel.layoutType.collectAsStateWithLifecycle()
 
                     val popularMovies = movieListViewModel.popularMovies.collectAsLazyPagingItems()
-                    val upComingMovies = movieListViewModel.upComingMovies.collectAsLazyPagingItems()
-                    val topRatedMovies = movieListViewModel.topRatedMovies.collectAsLazyPagingItems()
-                    val nowPlayingMovies = movieListViewModel.nowPlayingMovies.collectAsLazyPagingItems()
+                    val upComingMovies =
+                        movieListViewModel.upComingMovies.collectAsLazyPagingItems()
+                    val topRatedMovies =
+                        movieListViewModel.topRatedMovies.collectAsLazyPagingItems()
+                    val nowPlayingMovies =
+                        movieListViewModel.nowPlayingMovies.collectAsLazyPagingItems()
+
+                    val searchBarIsOpen = remember {
+                        mutableStateOf(false)
+                    }
 
                     Scaffold(
                         modifier = Modifier
@@ -80,22 +97,53 @@ class MainActivity : ComponentActivity() {
                             .nestedScroll(scrollBehavior.nestedScrollConnection),
                         topBar = {
                             if (!drawerTopAppBarEnabled) {
-                                MyTopAppBar(
-                                    title = "${currentScreen.value?.destination?.route}",
-                                    isLayoutGrid = layoutType.value != 0,
-                                    scrollBehavior = scrollBehavior,
-                                    onSearchClick = { /*TODO*/ },
-                                    onChangeListLayoutClick = {
-                                        movieListViewModel.flipLayoutType()
-                                    }
-                                )
+                                if (!searchBarIsOpen.value) {
+                                    MyTopAppBar(
+                                        title = "${currentScreen.value?.destination?.route}",
+                                        isLayoutGrid = layoutType.value != 0,
+                                        scrollBehavior = scrollBehavior,
+                                        onSearchClick = { searchBarIsOpen.value = true },
+                                        onChangeListLayoutClick = {
+                                            movieListViewModel.flipLayoutType()
+                                        }
+                                    )
+                                } else {
+                                    val query =
+                                        searchBarViewModel.query.collectAsStateWithLifecycle()
+
+                                    val searchedMovies =
+                                        searchBarViewModel.searchedMoviesList.collectAsLazyPagingItems()
+                                    MySearchBar(
+                                        query = query.value,
+                                        onQueryChange = {newQuery->
+                                            searchBarViewModel.onQueryChange(newQuery)
+                                        },
+                                        onSearch = {searchedQuery->
+                                            searchBarViewModel.onSearch(searchedQuery)
+                                        },
+                                        active = searchBarIsOpen.value,
+                                        onActiveChange = {activeState->
+                                            searchBarIsOpen.value = activeState
+                                        },
+                                        onBackPress = { searchBarIsOpen.value = false },
+                                        onClearPress = searchBarViewModel::onClear,
+                                        isLoading = searchedMovies.loadState.refresh is LoadState.Loading && searchedMovies.itemCount != 0,
+                                        layoutType = layoutType.value,
+                                        list = if (searchedMovies.itemCount == 0) topRatedMovies else searchedMovies,
+                                        navController = navController
+                                    )
+                                }
                             }
                         },
                         bottomBar = {
                             if (!drawerTopAppBarEnabled) {
                                 MyBottomNavBar(
                                     onBottomNavBarItemClick = {
-                                        navController.navigate(it)
+                                        navController.navigate(it) {
+                                            popUpTo(it) {
+                                                inclusive = true
+                                            }
+                                        }
                                     }
                                 )
                             }
@@ -125,8 +173,10 @@ class MainActivity : ComponentActivity() {
                                     })
                                 }
                                 composable(
-                                    route = "${ Screens.MovieDetailsScreen.route }/{movie_id}",
-                                    arguments = listOf(navArgument("movie_id"){type = NavType.IntType}),
+                                    route = "${Screens.MovieDetailsScreen.route}/{movie_id}",
+                                    arguments = listOf(navArgument("movie_id") {
+                                        type = NavType.IntType
+                                    }),
                                     enterTransition = {
                                         slideIntoContainer(
                                             towards = AnimatedContentTransitionScope.SlideDirection.Left,
@@ -154,7 +204,8 @@ class MainActivity : ComponentActivity() {
                                 ) {
                                     movieDetailsViewModel.setMovieId(it.arguments?.getInt("movie_id")!!)
                                     movieDetailsViewModel.getMovieDetails()
-                                    val movieDetails = movieDetailsViewModel.movieDetails.collectAsStateWithLifecycle()
+                                    val movieDetails =
+                                        movieDetailsViewModel.movieDetails.collectAsStateWithLifecycle()
                                     MovieDetailsScreen(
                                         movieDetails = movieDetails.value,
                                         onNavigateBackClick = {
@@ -190,9 +241,9 @@ fun NavGraphBuilder.listsGraph(
     navController: NavController,
     layoutType: State<Int>,
     popularMovies: LazyPagingItems<MovieEntity>,
-    upComingMovies : LazyPagingItems<MovieEntity>,
-    topRatedMovies : LazyPagingItems<MovieEntity>,
-    nowPlayingMovies : LazyPagingItems<MovieEntity>,
+    upComingMovies: LazyPagingItems<MovieEntity>,
+    topRatedMovies: LazyPagingItems<MovieEntity>,
+    nowPlayingMovies: LazyPagingItems<MovieEntity>,
 ) {
     navigation(
         startDestination = Screens.PopularScreen.route,

@@ -20,7 +20,11 @@ fun SplashScreen(
 
     LaunchedEffect(key1 = 1) {
         initializingOperation()
-        navController.navigate(Screens.ListsGraph.route)
+        navController.navigate(Screens.ListsGraph.route){
+            popUpTo(Screens.SplashScreen.route){
+                inclusive = true
+            }
+        }
     }
     Box(
         modifier = Modifier.fillMaxSize(),

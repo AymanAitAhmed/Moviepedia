@@ -7,13 +7,13 @@ import androidx.room.TypeConverters
 
 data class MovieEntity(
     val DbId : Int? = null,
-    val id: Int,
-    val genre_ids: List<Int>,
-    val original_language: String,
-    val original_title: String,
-    val poster_path: String,
-    val release_date: String,
-    val title: String,
-    val vote_average: Double,
-    val vote_count: Int
+    val id: Int? = null,
+    val genre_ids: List<Int>?= null,
+    val original_language: String?= null,
+    val original_title: String?= null,
+    val poster_path: String?= null,
+    val release_date: String?= null,
+    val title: String?= null,
+    val vote_average: Double?= null,
+    val vote_count: Int?= null
 )
