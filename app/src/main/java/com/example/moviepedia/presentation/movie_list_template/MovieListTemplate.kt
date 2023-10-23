@@ -33,8 +33,8 @@ fun MovieList(
     ) {
         AnimatedVisibility(
             visible = layoutType == 0,
-            enter = slideInHorizontally(animationSpec = tween(700,80)),
-            exit = slideOutHorizontally(animationSpec = tween(600), targetOffsetX = {it/2})
+            enter = slideInHorizontally(animationSpec = tween(700, 80)),
+            exit = slideOutHorizontally(animationSpec = tween(600), targetOffsetX = { it / 2 })
         ) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
@@ -54,8 +54,7 @@ fun MovieList(
                             rating = movie.vote_average?.toFloat() ?: 0.0f,
                             ratingCount = movie.vote_count ?: 0,
                             onClick = {
-                                println(movie.id)
-                                navController.navigate("${ Screens.MovieDetailsScreen.route }/${movie.id}")
+                                navController.navigate("${Screens.MovieDetailsScreen.route}/${movie.id}")
                             }
                         )
                     }
@@ -64,8 +63,8 @@ fun MovieList(
         }
         AnimatedVisibility(
             visible = layoutType != 0,
-            enter = slideInHorizontally(animationSpec = tween(700,80)),
-            exit = slideOutHorizontally(animationSpec = tween(0), targetOffsetX = {it/2})
+            enter = slideInHorizontally(animationSpec = tween(700, 80)),
+            exit = slideOutHorizontally(animationSpec = tween(0), targetOffsetX = { it / 2 })
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -85,7 +84,7 @@ fun MovieList(
                             rating = movie.vote_average?.toFloat() ?: 0.0f,
                             ratingCount = movie.vote_count ?: 0,
                             onClick = {
-                                navController.navigate(Screens.MovieDetailsScreen.route)
+                                navController.navigate("${Screens.MovieDetailsScreen.route}/${movie.id}")
                             }
                         )
 

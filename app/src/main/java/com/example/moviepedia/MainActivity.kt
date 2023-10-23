@@ -37,6 +37,7 @@ import com.example.moviepedia.components.Screens
 import com.example.moviepedia.domain.model.MovieEntity
 import com.example.moviepedia.presentation.bottomnav.MyBottomNavBar
 import com.example.moviepedia.presentation.movieDetails.MovieDetailsScreen
+import com.example.moviepedia.presentation.movieDetails.MovieDetailsTopBar
 import com.example.moviepedia.presentation.movieDetails.MovieDetailsViewModel
 import com.example.moviepedia.presentation.movie_list_template.MovieList
 import com.example.moviepedia.presentation.movie_list_template.MovieListViewModel
@@ -70,12 +71,8 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val currentScreen = navController.currentBackStackEntryAsState()
                     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-                    val drawerTopAppBarEnabled =
-                        currentScreen.value?.destination?.route?.lowercase() == Screens.SplashScreen.route.lowercase() ||
-                                currentScreen.value?.destination?.route?.contains(
-                                    Screens.MovieDetailsScreen.route.lowercase(),
-                                    ignoreCase = true
-                                ) == true
+                    val topAppBarEnabled =
+                        currentScreen.value?.destination?.route?.lowercase() != Screens.SplashScreen.route.lowercase()
 
                     val layoutType = movieListViewModel.layoutType.collectAsStateWithLifecycle()
 
@@ -91,13 +88,53 @@ class MainActivity : ComponentActivity() {
                         mutableStateOf(false)
                     }
 
+                    val showMovieDetailsTopBar =
+                        currentScreen.value?.destination?.route?.contains(
+                            Screens.MovieDetailsScreen.route.lowercase(),
+                            ignoreCase = true
+                        ) == true
                     Scaffold(
                         modifier = Modifier
                             .fillMaxSize()
                             .nestedScroll(scrollBehavior.nestedScrollConnection),
                         topBar = {
-                            if (!drawerTopAppBarEnabled) {
-                                if (!searchBarIsOpen.value) {
+                            if (topAppBarEnabled && searchBarIsOpen.value) {
+                                val query =
+                                    searchBarViewModel.query.collectAsStateWithLifecycle()
+
+                                val searchedMovies =
+                                    searchBarViewModel.searchedMoviesList.collectAsLazyPagingItems()
+                                MySearchBar(
+                                    query = query.value,
+                                    onQueryChange = { newQuery ->
+                                        searchBarViewModel.onQueryChange(newQuery)
+                                    },
+                                    onSearch = { searchedQuery ->
+                                        searchBarViewModel.onSearch(searchedQuery)
+                                    },
+                                    active = searchBarIsOpen.value,
+                                    onActiveChange = { activeState ->
+                                        searchBarIsOpen.value = activeState
+                                    },
+                                    onBackPress = { searchBarIsOpen.value = false },
+                                    onClearPress = searchBarViewModel::onClear,
+                                    isLoading = searchedMovies.loadState.refresh is LoadState.Loading && searchedMovies.itemCount != 0,
+                                    layoutType = layoutType.value,
+                                    list = if (searchedMovies.itemCount == 0) topRatedMovies else searchedMovies,
+                                    navController = navController
+                                )
+                            }
+                            if (topAppBarEnabled && !searchBarIsOpen.value) {
+                                if (showMovieDetailsTopBar) {
+                                    MovieDetailsTopBar(
+                                        onNavigateBackClick = {
+                                            navController.popBackStack()
+                                        },
+                                        onSearchClick = {
+                                            searchBarIsOpen.value = true
+                                        }
+                                    )
+                                }else {
                                     MyTopAppBar(
                                         title = "${currentScreen.value?.destination?.route}",
                                         isLayoutGrid = layoutType.value != 0,
@@ -107,36 +144,12 @@ class MainActivity : ComponentActivity() {
                                             movieListViewModel.flipLayoutType()
                                         }
                                     )
-                                } else {
-                                    val query =
-                                        searchBarViewModel.query.collectAsStateWithLifecycle()
-
-                                    val searchedMovies =
-                                        searchBarViewModel.searchedMoviesList.collectAsLazyPagingItems()
-                                    MySearchBar(
-                                        query = query.value,
-                                        onQueryChange = {newQuery->
-                                            searchBarViewModel.onQueryChange(newQuery)
-                                        },
-                                        onSearch = {searchedQuery->
-                                            searchBarViewModel.onSearch(searchedQuery)
-                                        },
-                                        active = searchBarIsOpen.value,
-                                        onActiveChange = {activeState->
-                                            searchBarIsOpen.value = activeState
-                                        },
-                                        onBackPress = { searchBarIsOpen.value = false },
-                                        onClearPress = searchBarViewModel::onClear,
-                                        isLoading = searchedMovies.loadState.refresh is LoadState.Loading && searchedMovies.itemCount != 0,
-                                        layoutType = layoutType.value,
-                                        list = if (searchedMovies.itemCount == 0) topRatedMovies else searchedMovies,
-                                        navController = navController
-                                    )
                                 }
                             }
+
                         },
                         bottomBar = {
-                            if (!drawerTopAppBarEnabled) {
+                            if (topAppBarEnabled && !showMovieDetailsTopBar) {
                                 MyBottomNavBar(
                                     onBottomNavBarItemClick = {
                                         navController.navigate(it) {
@@ -208,12 +221,7 @@ class MainActivity : ComponentActivity() {
                                         movieDetailsViewModel.movieDetails.collectAsStateWithLifecycle()
                                     MovieDetailsScreen(
                                         movieDetails = movieDetails.value,
-                                        onNavigateBackClick = {
-                                            navController.popBackStack()
-                                        },
-                                        onSearchClick = {
-
-                                        }
+                                        paddingValues = paddingValues
                                     )
                                 }
 
