@@ -21,6 +21,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.moviepedia.R
+import com.example.moviepedia.components.Screens
 import com.example.moviepedia.domain.model.MovieEntity
 import com.example.moviepedia.presentation.movie_list_template.MovieList
 
@@ -30,21 +31,21 @@ fun MySearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearch: (String) -> Unit,
-    active : Boolean,
+    active: Boolean,
     onActiveChange: (Boolean) -> Unit,
-    onBackPress : ()->Unit,
-    onClearPress : () -> Unit,
-    isLoading : Boolean,
+    onBackPress: () -> Unit,
+    onClearPress: () -> Unit,
+    isLoading: Boolean,
     layoutType: Int,
     list: LazyPagingItems<MovieEntity>,
     navController: NavController
 ) {
     SearchBar(
         query = query,
-        onQueryChange = {onQueryChange(it)},
-        onSearch = {onSearch(it)},
+        onQueryChange = { onQueryChange(it) },
+        onSearch = { onSearch(it) },
         active = active,
-        onActiveChange = {onActiveChange(it)},
+        onActiveChange = { onActiveChange(it) },
         shape = RectangleShape,
         placeholder = {
             Text(text = "Ex: Bank heist movie")
@@ -56,9 +57,9 @@ fun MySearchBar(
         },
         trailingIcon = {
             IconButton(onClick = {
-                if (query.isBlank() || query.isEmpty()){
+                if (query.isBlank() || query.isEmpty()) {
                     onBackPress()
-                }else{
+                } else {
                     onClearPress()
                 }
             }) {
@@ -66,17 +67,27 @@ fun MySearchBar(
             }
         }
     ) {
-        if (isLoading){
+        if (isLoading) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                val lottieComposition = rememberLottieComposition(spec = LottieCompositionSpec.RawRes(
-                    R.raw.animation_lnnc2so3))
+                val lottieComposition = rememberLottieComposition(
+                    spec = LottieCompositionSpec.RawRes(
+                        R.raw.animation_lnnc2so3
+                    )
+                )
                 LottieAnimation(
                     composition = lottieComposition.value,
                     iterations = LottieConstants.IterateForever
                 )
             }
-        }else{
-            MovieList(layoutType = layoutType, list = list, navController = navController)
+        } else {
+            MovieList(
+                layoutType = layoutType,
+                list = list,
+                onItemClick = {
+                    navController.navigate("${Screens.MovieDetailsScreen.route}/${it}")
+                    onActiveChange(false)
+                }
+            )
         }
     }
 }

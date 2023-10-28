@@ -15,16 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
-import com.example.moviepedia.components.Screens
 import com.example.moviepedia.domain.model.MovieEntity
 
 @Composable
 fun MovieList(
     layoutType: Int,
     list: LazyPagingItems<MovieEntity>,
-    navController: NavController
+    onItemClick : (Int?) -> Unit
 ) {
 
     Box(
@@ -53,9 +51,7 @@ fun MovieList(
                             language = movie.original_language ?: "",
                             rating = movie.vote_average?.toFloat() ?: 0.0f,
                             ratingCount = movie.vote_count ?: 0,
-                            onClick = {
-                                navController.navigate("${Screens.MovieDetailsScreen.route}/${movie.id}")
-                            }
+                            onClick = { onItemClick(movie.id) }
                         )
                     }
                 }
@@ -83,9 +79,7 @@ fun MovieList(
                             language = movie.original_language ?: "",
                             rating = movie.vote_average?.toFloat() ?: 0.0f,
                             ratingCount = movie.vote_count ?: 0,
-                            onClick = {
-                                navController.navigate("${Screens.MovieDetailsScreen.route}/${movie.id}")
-                            }
+                            onClick = { onItemClick(movie.id) }
                         )
 
                     }

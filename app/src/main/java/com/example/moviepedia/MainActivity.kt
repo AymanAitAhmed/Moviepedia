@@ -134,7 +134,7 @@ class MainActivity : ComponentActivity() {
                                             searchBarIsOpen.value = true
                                         }
                                     )
-                                }else {
+                                } else {
                                     MyTopAppBar(
                                         title = "${currentScreen.value?.destination?.route}",
                                         isLayoutGrid = layoutType.value != 0,
@@ -258,27 +258,31 @@ fun NavGraphBuilder.listsGraph(
         route = Screens.ListsGraph.route
     ) {
         composable(route = Screens.NowPlayingScreen.route) {
-            MovieList(layoutType.value, nowPlayingMovies, navController)
+            MovieList(layoutType.value, nowPlayingMovies, onItemClick = {
+                navController.navigate("${Screens.MovieDetailsScreen.route}/${it}")
+            })
         }
 
         composable(route = Screens.PopularScreen.route) {
-            MovieList(layoutType.value, popularMovies, navController)
+            MovieList(layoutType.value, popularMovies, onItemClick = {
+                navController.navigate("${Screens.MovieDetailsScreen.route}/${it}")
+            })
         }
 
         composable(route = Screens.TopRatedScreen.route) {
             MovieList(
                 layoutType = layoutType.value,
-                list = topRatedMovies,
-                navController = navController
-            )
+                list = topRatedMovies, onItemClick = {
+                    navController.navigate("${Screens.MovieDetailsScreen.route}/${it}")
+                })
         }
 
         composable(route = Screens.UpComingScreen.route) {
             MovieList(
                 layoutType = layoutType.value,
-                list = upComingMovies,
-                navController = navController
-            )
+                list = upComingMovies, onItemClick = {
+                    navController.navigate("${Screens.MovieDetailsScreen.route}/${it}")
+                })
         }
     }
 }
