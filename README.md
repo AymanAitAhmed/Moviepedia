@@ -1,4 +1,7 @@
-![GitHub release (latest by date)](https://github.com/AymanAitAhmed/Moviepedia/releases/download/v1.0.0/Moviepedia.apk)
+<a href="https://github.com/AymanAitAhmed/Moviepedia/releases/latest/download/Moviepedia.apk"> 
+  
+<img src="https://img.shields.io/github/v/release/AymanAitAhmed/Moviepedia" width="100">
+</a>
 
 # Moviepedia - Your Ultimate Movie Companion
 
@@ -71,3 +74,5 @@ Special thanks to the Android community, Jetpack Compose team, and all contribut
 
 ## Contact
 If you have any questions or suggestions, please feel free to contact me at aymen.aitahmed3@gmail.com.
+
+[1]: https://img.shields.io/github/v/release/AymanAitAhmed/Moviepedia
