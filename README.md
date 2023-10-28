@@ -1,3 +1,5 @@
+![GitHub release (latest by date)](https://github.com/AymanAitAhmed/Moviepedia/releases/download/v1.0.0/Moviepedia.apk)
+
 # Moviepedia - Your Ultimate Movie Companion
 
 Moviepedia is a feature-packed Android application designed to provide you with comprehensive information about movies using the TMDB API. It offers a sleek and user-friendly interface, making it easy to discover popular, now playing, coming soon, and top-rated movies. Additionally, you can search for specific movies and access detailed information about them.
