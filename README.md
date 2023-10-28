@@ -36,3 +36,36 @@ Moviepedia is a feature-packed Android application designed to provide you with 
 
 - **Clean Architecture:** Structured codebase that enhances code maintainability and testability.
 
+## Screenshots
+
+Here are some screenshots from the Moviepedia app:
+
+<div align="center">
+
+<img src="https://github.com/AymanAitAhmed/Moviepedia/blob/master/screenshots/popular.jpg" width="200">
+
+<img src="https://github.com/AymanAitAhmed/Moviepedia/blob/master/screenshots/now_playing.jpg" width="200">
+
+<img src="https://github.com/AymanAitAhmed/Moviepedia/blob/master/screenshots/up_coming.jpg" width="200">
+
+<img src="https://github.com/AymanAitAhmed/Moviepedia/blob/master/screenshots/top_rated.jpg" width="200">
+
+</div>
+<div align="center">
+
+<img src="https://github.com/AymanAitAhmed/Moviepedia/blob/master/screenshots/list_view.jpg" width="200">
+
+<img src="https://github.com/AymanAitAhmed/Moviepedia/blob/master/screenshots/search.jpg" width="200">
+
+<img src="https://github.com/AymanAitAhmed/Moviepedia/blob/master/screenshots/movie_details.jpg" width="200">
+
+</div>
+
+## License
+This project is intended for educational purposes only. You are free to use the code for learning, experimentation, or personal projects. However, any commercial use of the code, including publishing a similar app for profit, is strictly prohibited.
+
+## Acknowledgments
+Special thanks to the Android community, Jetpack Compose team, and all contributors for their valuable resources and support during the development of this project.
+
+## Contact
+If you have any questions or suggestions, please feel free to contact me at aymen.aitahmed3@gmail.com.
